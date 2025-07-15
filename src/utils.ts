@@ -313,3 +313,9 @@ export const formatTimeSlotForDisplay = (timeSlot: string): string => {
   const [hourStr] = time.split(':');
   return hourStr;
 };
+
+export const getTodayDateAtEndOfDay = (): string => {
+  const today = new Date();
+  today.setHours(23, 59, 0, 0);
+  return today.toISOString();
+};

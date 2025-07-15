@@ -12,10 +12,11 @@ import { SettingsScreen } from './components/SettingsScreen';
 import { BottomNavigation } from './components/BottomNavigation';
 import { AddTaskModal } from './components/AddTaskModal';
 import { EditTaskModal } from './components/EditTaskModal';
+import { QuickAddTaskModal } from './components/QuickAddTaskModal';
 import { DesktopNavigation } from './components/DesktopNavigation';
 import { LifetimeTracker } from './components/LifetimeTracker';
 import { useDarkMode } from './hooks/useDarkMode';
-import { CheckSquare, LogOut } from 'lucide-react';
+import { CheckSquare, LogOut, Plus } from 'lucide-react';
 
 function App() {
   const { user, loading: authLoading, error: authError, signUp, signIn, signOut } = useAuth();
@@ -23,6 +24,7 @@ function App() {
   const { tasks, addTask, updateTask, toggleTask, deleteTask } = useTasks(user?.id || null);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
+  const [showQuickAddTaskModal, setShowQuickAddTaskModal] = useState(false);
   const [editingTask, setEditingTask] = useState<string | null>(null);
   const { isDarkMode, toggleDarkMode } = useDarkMode();
 
@@ -63,6 +65,11 @@ function App() {
     
     addTask(taskData);
     setShowAddTaskModal(false);
+  };
+
+  const handleQuickAddTask = (taskData: { title: string; deadline: string; project_id: string }) => {
+    addTask(taskData);
+    setShowQuickAddTaskModal(false);
   };
 
   const handleEditTask = (taskId: string, updates: { title: string; deadline: string; project_id: string }) => {
@@ -236,6 +243,15 @@ function App() {
         />
       )}
 
+      {/* Quick Add Task Modal */}
+      {showQuickAddTaskModal && (
+        <QuickAddTaskModal
+          projects={projects}
+          onAddTask={handleQuickAddTask}
+          onClose={() => setShowQuickAddTaskModal(false)}
+        />
+      )}
+
       {/* Edit Task Modal */}
       {editingTask && editingTaskData && (
         <EditTaskModal
@@ -245,6 +261,15 @@ function App() {
           onClose={() => setEditingTask(null)}
         />
       )}
+
+      {/* Floating Action Button - Quick Add Task */}
+      <button
+        onClick={() => setShowQuickAddTaskModal(true)}
+        className="fixed bottom-24 right-6 md:bottom-6 md:right-6 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center z-40 group"
+        title="Quick add task"
+      >
+        <Plus size={24} className="group-hover:scale-110 transition-transform duration-200" />
+      </button>
     </div>
   );
 }
