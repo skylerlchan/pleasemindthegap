@@ -98,6 +98,16 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
   const editingProjectData = editingProject ? projects.find(p => p.id === editingProject) : null;
   const deletingProjectData = deletingProject ? projects.find(p => p.id === deletingProject) : null;
 
+  const parentProject = project.parent_id ? projects.find(p => p.id === project.parent_id) : null;
+
+  const handleBackClick = () => {
+    if (parentProject) {
+      onSelectProject(parentProject.id);
+    } else {
+      onBack();
+    }
+  };
+
   const getStatusIcon = (status: string | 'finished') => {
     switch (status) {
       case 'live':
@@ -134,11 +144,11 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
       <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between mb-4">
           <button
-            onClick={onBack}
+            onClick={handleBackClick}
             className="flex items-center space-x-2 text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-100 transition-colors"
           >
             <ArrowLeft size={20} />
-            <span>Back to Projects</span>
+            <span>{parentProject ? `Back to ${parentProject.name}` : 'Back to Projects'}</span>
           </button>
           
           <button
