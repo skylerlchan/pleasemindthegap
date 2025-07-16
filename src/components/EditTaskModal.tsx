@@ -6,7 +6,12 @@ import { X, Save, Calendar, Clock } from 'lucide-react';
 interface EditTaskModalProps {
   task: Task;
   projects: Project[];
-  onSave: (taskId: string, updates: { title: string; deadline: string; project_id: string }) => void;
+  onSave: (taskId: string, updates: {
+    title: string;
+    deadline: string;
+    project_id: string;
+    description?: string;
+  }) => void;
   onClose: () => void;
 }
 
@@ -20,7 +25,6 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
   const [title, setTitle] = useState(task.title);
   const [date, setDate] = useState(taskDeadline.toISOString().split('T')[0]);
   const [timeSlot, setTimeSlot] = useState(() => {
-    // Check if this is a holding task (11:59 PM)
     if (taskDeadline.getHours() === 23 && taskDeadline.getMinutes() === 59) {
       return 'Holding';
     }
@@ -29,6 +33,7 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
     );
   });
   const [projectId, setProjectId] = useState(task.project_id);
+  const [description, setDescription] = useState(task.description || '');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,17 +41,17 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
 
     let deadline: Date;
     if (timeSlot === 'Holding') {
-      // Set to 11:59 PM for holding tasks
       deadline = new Date(`${date}T23:59`);
     } else {
       const time24 = convertTimeSlotTo24Hour(timeSlot);
       deadline = new Date(`${date}T${time24}`);
     }
-    
+
     onSave(task.id, {
       title: title.trim(),
       deadline: deadline.toISOString(),
-      project_id: projectId
+      project_id: projectId,
+      description: description.trim() || undefined
     });
 
     onClose();
@@ -68,6 +73,7 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Title */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
               Task Title
@@ -82,6 +88,7 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
             />
           </div>
 
+          {/* Date and Time */}
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
@@ -95,7 +102,6 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
                 className="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               />
             </div>
-            
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 <Clock size={16} className="inline mr-1" />
@@ -115,6 +121,7 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
             </div>
           </div>
 
+          {/* Project */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
               Project
@@ -132,6 +139,21 @@ export const EditTaskModal: React.FC<EditTaskModalProps> = ({
             </select>
           </div>
 
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+              Description <span className="text-gray-400 text-xs">(optional)</span>
+            </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={4}
+              placeholder="Add extra details about this task..."
+              className="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 resize-none"
+            />
+          </div>
+
+          {/* Buttons */}
           <div className="flex space-x-3 pt-4">
             <button
               type="button"
