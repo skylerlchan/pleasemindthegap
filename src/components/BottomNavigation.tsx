@@ -12,12 +12,15 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
   onTabChange,
   onAddTask
 }) => {
-  const tabs = [
-    { id: 'dashboard', label: 'Dashboard', icon: Home },
-    { id: 'projects', label: 'Projects', icon: FolderOpen },
-    { id: 'calendar', label: 'Calendar', icon: Calendar },
-    { id: 'settings', label: 'Settings', icon: Settings }
-  ];
+import { Home, FolderOpen, Calendar, Settings, Users } from 'lucide-react';
+
+const tabs = [
+  { id: 'dashboard', label: 'Dashboard', icon: Home },
+  { id: 'projects', label: 'Projects', icon: FolderOpen },
+  { id: 'people', label: 'People', icon: Users }, // 👈 Added in the center
+  { id: 'calendar', label: 'Calendar', icon: Calendar },
+  { id: 'settings', label: 'Settings', icon: Settings }
+];
 
   const handleTabClick = (tabId: string) => {
     onTabChange(tabId);
