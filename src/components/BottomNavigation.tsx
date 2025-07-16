@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, FolderOpen, Calendar, Settings } from 'lucide-react';
+import { Home, FolderOpen, Calendar, Settings, Users } from 'lucide-react';
 
 interface BottomNavigationProps {
   activeTab: string;
@@ -12,15 +12,13 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
   onTabChange,
   onAddTask
 }) => {
-import { Home, FolderOpen, Calendar, Settings, Users } from 'lucide-react';
-
-const tabs = [
-  { id: 'dashboard', label: 'Dashboard', icon: Home },
-  { id: 'projects', label: 'Projects', icon: FolderOpen },
-  { id: 'people', label: 'People', icon: Users }, // 👈 Added in the center
-  { id: 'calendar', label: 'Calendar', icon: Calendar },
-  { id: 'settings', label: 'Settings', icon: Settings }
-];
+  const tabs = [
+    { id: 'dashboard', label: 'Dashboard', icon: Home },
+    { id: 'projects', label: 'Projects', icon: FolderOpen },
+    { id: 'people', label: 'People', icon: Users }, // 👈 added in center
+    { id: 'calendar', label: 'Calendar', icon: Calendar },
+    { id: 'settings', label: 'Settings', icon: Settings }
+  ];
 
   const handleTabClick = (tabId: string) => {
     onTabChange(tabId);
@@ -32,7 +30,7 @@ const tabs = [
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
-          
+
           return (
             <button
               key={tab.id}
@@ -45,8 +43,8 @@ const tabs = [
               <div className={`
                 flex items-center justify-center rounded-full transition-all duration-200
                 ${isActive 
-                    ? 'w-10 h-10 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300' 
-                    : 'w-10 h-10 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
+                  ? 'w-10 h-10 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300' 
+                  : 'w-10 h-10 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
                 }
               `}>
                 <Icon size={20} />
@@ -54,8 +52,8 @@ const tabs = [
               <span className={`
                 text-xs mt-1 font-medium transition-colors duration-200
                 ${isActive 
-                    ? 'text-blue-600 dark:text-blue-300' 
-                    : 'text-gray-500 dark:text-gray-400'
+                  ? 'text-blue-600 dark:text-blue-300' 
+                  : 'text-gray-500 dark:text-gray-400'
                 }
               `}>
                 {tab.label}
