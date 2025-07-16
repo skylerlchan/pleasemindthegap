@@ -6,7 +6,9 @@ export interface Task {
   project_id: string;
   user_id: string;
   created_at: string;
+  description?: string; // ✅ new optional field
 }
+
 
 export interface Project {
   id: string;
