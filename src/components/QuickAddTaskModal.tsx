@@ -5,7 +5,12 @@ import { X, Plus, Zap, Calendar, Clock, FolderOpen } from 'lucide-react';
 
 interface QuickAddTaskModalProps {
   projects: Project[];
-  onAddTask: (task: { title: string; deadline: string; project_id: string }) => void;
+  onAddTask: (task: {
+    title: string;
+    deadline: string;
+    project_id: string;
+    description?: string;
+  }) => void;
   onClose: () => void;
 }
 
@@ -15,13 +20,13 @@ export const QuickAddTaskModal: React.FC<QuickAddTaskModalProps> = ({
   onClose
 }) => {
   const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [date, setDate] = useState(() => {
     const today = new Date();
     return today.toISOString().split('T')[0];
   });
   const [timeSlot, setTimeSlot] = useState('Holding');
   const [projectId, setProjectId] = useState(() => {
-    // Default to Inbox project if it exists, otherwise first project
     const inboxProject = projects.find(p => p.name === 'Inbox' && !p.parent_id);
     return inboxProject?.id || projects[0]?.id || '';
   });
@@ -30,9 +35,7 @@ export const QuickAddTaskModal: React.FC<QuickAddTaskModalProps> = ({
     e.preventDefault();
     if (!title.trim() || !date || !timeSlot) return;
 
-    // Use selected project or fallback to Inbox
     const finalProjectId = projectId || projects.find(p => p.name === 'Inbox' && !p.parent_id)?.id || projects[0]?.id;
-    
     if (!finalProjectId) {
       console.error('No project available for task');
       return;
@@ -40,17 +43,17 @@ export const QuickAddTaskModal: React.FC<QuickAddTaskModalProps> = ({
 
     let deadline: Date;
     if (timeSlot === 'Holding') {
-      // Set to 11:59 PM for holding tasks
       deadline = new Date(`${date}T23:59`);
     } else {
       const time24 = convertTimeSlotTo24Hour(timeSlot);
       deadline = new Date(`${date}T${time24}`);
     }
-    
+
     onAddTask({
       title: title.trim(),
       deadline: deadline.toISOString(),
-      project_id: finalProjectId
+      project_id: finalProjectId,
+      description: description.trim() || undefined,
     });
 
     onClose();
@@ -123,7 +126,6 @@ export const QuickAddTaskModal: React.FC<QuickAddTaskModalProps> = ({
                 className="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               />
             </div>
-            
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 <Clock size={16} className="inline mr-1" />
@@ -141,6 +143,19 @@ export const QuickAddTaskModal: React.FC<QuickAddTaskModalProps> = ({
                 ))}
               </select>
             </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+              Description <span className="text-gray-400 text-xs">(optional)</span>
+            </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={4}
+              placeholder="Add any details about this task..."
+              className="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 resize-none"
+            />
           </div>
 
           <div className="flex space-x-3 pt-4">
