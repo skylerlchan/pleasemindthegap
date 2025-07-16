@@ -28,7 +28,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   onAddTask,
   onUpdateTask
 }) => {
-  const [view, setView] = useState<CalendarView>('day');
+  const [view, setView] = useState<CalendarView>('3-day');
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedSlot, setSelectedSlot] = useState<{ date: Date; hour: number } | null>(null);
   const [currentTime, setCurrentTime] = useState(new Date());
