@@ -175,29 +175,44 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
               {getStatusIcon(displayStatus)}
               <span>{getStatusLabel(displayStatus)}</span>
             </div>
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={() => setEditingProject(project.id)}
-              className="flex items-center space-x-2 px-3 py-2 text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-            >
-              <Edit3 size={16} />
-              <span>Edit</span>
-            </button>
+
+
+
             
-            <button
-              onClick={handleToggleFinished}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
-                isFinished 
-                  ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/70' 
-                  : 'bg-blue-600 text-white hover:bg-blue-700'
-              }`}
-            >
-              {isFinished ? <RotateCcw size={18} /> : <Flag size={18} />}
-              <span>{isFinished ? 'Reactivate Project' : 'Mark as Finished'}</span>
-            </button>
           </div>
+          <div className="flex justify-end">
+  <button
+    onClick={() => setEditingProject(project.id)}
+    className="flex items-center space-x-2 px-3 py-2 text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+  >
+    <Edit3 size={16} />
+    <span>Edit</span>
+  </button>
+          </div>
+
+<div className="flex justify-center md:justify-end mt-4">
+  <button
+    onClick={handleToggleFinished}
+    className={`w-full md:w-auto flex items-center justify-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+      isFinished 
+        ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/70' 
+        : 'bg-blue-600 text-white hover:bg-blue-700'
+    }`}
+  >
+    {isFinished ? <RotateCcw size={18} /> : <Flag size={18} />}
+    <span>{isFinished ? 'Reactivate Project' : 'Mark as Finished'}</span>
+  </button>
+</div>
+
+
+          
+
+
+
+
+
+
+          
         </div>
       </div>
 
