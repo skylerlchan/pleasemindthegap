@@ -549,7 +549,7 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
           })}
         </div>
       </div>
-      
+    
       {/* Overdue Tasks */}
       {overdueTasks.length > 0 && (
         <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
